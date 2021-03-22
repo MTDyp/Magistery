@@ -1,0 +1,44 @@
+import pandas as pd  
+import numpy as np  
+import matplotlib.pyplot as plt  
+import seaborn as seabornInstance 
+from sklearn.model_selection import train_test_split 
+from sklearn.linear_model import LinearRegression
+from sklearn import metrics
+%matplotlib inline
+
+import os
+cwd = os.getcwd()
+os.chdir("C:\\Users\\MPC\\Downloads")
+cwd
+
+table = pd.read_excel('Kyz49.xls')
+table.head(10)
+table.info()
+
+table.drop([0,1], inplace=True)
+table.rename(columns={'Время': 'Time', 'Tвн': 'T_home, C', 'Tнв':'T_Inside'}, inplace=True)
+table.head()
+
+table.plot(x='T_Inside', y='Q', style='o')  
+plt.title('Зависимость Q от наружной температуры')  
+plt.xlabel('Наружная температура, C')  
+plt.ylabel('Потребление энергии, Гкалл')  
+plt.show()
+
+X = table['T_Inside'].values.reshape(-1,1)
+y = table['Q'].values.reshape(-1,1)
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+regressor = LinearRegression()  
+regressor.fit(X_train, y_train)
+print(regressor.intercept_)#For retrieving the slope:
+print(regressor.coef_)
+
+y_pred = regressor.predict(X_test)
+df = pd.DataFrame({'Actual': y_test.flatten(), 'Predicted': y_pred.flatten()})
+df
+
+plt.scatter(X_test, y_test,  color='blue')
+plt.plot(X_test, y_pred, color='red', linewidth=2)
+plt.show()
