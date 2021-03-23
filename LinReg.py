@@ -19,15 +19,15 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 
 import os
 
-cwd = os.getcwd()
-os.chdir("C:\\Users\\MPC\\Downloads")
+cwd = os.getcwd()                       
+os.chdir("C:\\Users\\MPC\\Downloads")              #Выбор папки, откуда берется файл
 cwd
 
 
 # In[89]:
 
 
-table = pd.read_excel('Kyz49.xls')
+table = pd.read_excel('Rus66.xls')
 table.head(10)
 table.info()
 
