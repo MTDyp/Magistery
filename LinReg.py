@@ -78,7 +78,11 @@ y = table['Q'].values.reshape(-1,1)
 
 
 # In[53]:
-
+a = []
+for i in y:
+    for j in i:
+        a.append(j) 
+seabornInstance.distplot(a)
 
 print (y)
 
