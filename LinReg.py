@@ -84,7 +84,7 @@ for i in y:
         a.append(j) 
 seabornInstance.distplot(a)
 
-print (y)
+print (a)
 
 
 # In[117]:
