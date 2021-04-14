@@ -141,7 +141,7 @@ dataset.shape
 
 dataset.describe()
 
-X = dataset[['T_home, C','M1', 'dP']].values
+X = dataset[['T1','M1', 'dP']].values
 y = dataset['Q'].values
 
 Q = []                           # Преобразование N-размерного массива в одномерный
