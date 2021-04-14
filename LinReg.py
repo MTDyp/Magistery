@@ -31,7 +31,7 @@ table = pd.read_excel('Rus66.xls')
 table.head(10)
 table.info()
 
-
+#  David = dataset.copy()   # Один раз подготовить таблицу и работать с копией
 # In[90]:
 
 
@@ -48,7 +48,7 @@ table.head()
 
 # In[92]:
 
-
+dataset = dataset.query("~(Q <= 0)")              #Отсекаю значеня Q, которые равны или меньше 0 
 table.describe()
 
 
@@ -122,3 +122,59 @@ plt.scatter(X_test, y_test,  color='blue')
 plt.plot(X_test, y_pred, color='red', linewidth=2)
 plt.show()
 
+
+#  Применение 3х метрик оценки регрессии
+print('Mean Absolute Error:', metrics.mean_absolute_error(y_test, y_pred))
+print('Mean Squared Error:', metrics.mean_squared_error(y_test, y_pred))
+print('Root Mean Squared Error:', np.sqrt(metrics.mean_squared_error(y_test, y_pred)))
+
+
+## Множественная линейная регрессия
+dataset = pd.read_excel('Davidova28nT(12.19-05.20).xls') # Работаю с данными с Давыдова, т.к. там есть доступ к термометру в доме
+dataset.rename(columns={'Время': 'Time', 'Tвн': 'T_home, C', 'Tнв':'T_Inside'}, inplace=True) # Переименование столбцов
+
+dataset.drop([0,1], inplace=True)  # очистка ненужных столбцов с excel таблицы
+
+dataset.isnull().any()      # проверка на нулевые столбцы
+
+dataset.shape
+
+dataset.describe()
+
+X = dataset[['T_home, C','M1', 'dP']].values
+y = dataset['Q'].values
+
+Q = []                           # Преобразование N-размерного массива в одномерный
+for i in X:
+    for j in i:
+        Q.append(j) 
+        
+        
+
+        
+plt.figure(figsize =(15, 10))
+plt.tight_layout()
+seabornInstance.distplot(Q)
+
+
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+regressor = LinearRegression()  
+regressor.fit(X_train, y_train)
+y_pred = regressor.predict(X_test)
+
+
+df = pd.DataFrame({'Actual': y_test.flatten(), 'Predicted': y_pred.flatten()})
+df
+
+df1 = df.head(25)                                                           # визуализация обучения на 25 примерах в виде гистограммы
+df1.plot(kind = 'bar', figsize=(10,8))
+plt.grid(which='major', linestyle ='-', linewidth='0.5', color = 'green')
+plt.grid(which='minor', linestyle =':', linewidth='0.5', color = 'black')
+plt.show()
+
+
+#  Применение 3х метрик оценки регрессии
+print('Mean Absolute Error:', metrics.mean_absolute_error(y_test, y_pred))
+print('Mean Squared Error:', metrics.mean_squared_error(y_test, y_pred))
+print('Root Mean Squared Error:', np.sqrt(metrics.mean_squared_error(y_test, y_pred)))
